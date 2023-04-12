@@ -15,7 +15,8 @@ Một trong những lợi ích chính của việc sử dụng HDP là dễ sử
 quản lý tất cả các thành phần của hệ sinh thái Hadoop. Nó cũng cung cấp dịch vụ và hỗ trợ cấp doanh nghiệp để đảm bảo
 tính ổn định và độ tin cậy của nền tảng.
 
-- Với từng phiên bản HDP khác nhau, lại có những bộ công cụ đi kèm khác nhau, nhưng có thể thêm/bớt. Ví dụ: ở phiên bản 3.1.5 so với phiên bản 2.6.5: HDP đã bổ sung NiFi, Storm, Druid, Flink, Solr, ...
+- Với từng phiên bản HDP khác nhau, lại có những bộ công cụ đi kèm khác nhau, nhưng có thể thêm/bớt. Ví dụ: ở phiên bản
+  3.1.5 so với phiên bản 2.6.5: HDP đã bổ sung NiFi, Storm, Druid, Flink, Solr, ...
 
 ![Architecture](./assets/architecture.png "HDP")
 
@@ -33,7 +34,9 @@ tính ổn định và độ tin cậy của nền tảng.
 
 ### Hortonworks = Hadoop?
 
-Hortonworks is the major contributor of code and patches to many of these projects. These projects have been integrated and tested as part of the Hortonworks Data Platform release process and installation and configuration tools have also been included.
+Hortonworks is the major contributor of code and patches to many of these projects. These projects have been integrated
+and tested as part of the Hortonworks Data Platform release process and installation and configuration tools have also
+been included.
 
 ![HDP Components](./assets/components.png)
 
@@ -42,6 +45,7 @@ configuration files, so it's another opportunity for us to be able to configure 
 better performance or better storage efficiency, or just a better user experience on the back end, but all these are
 different configuration files that we have to manage, and this is where Ambari comes in, and it really helps us be able
 to manage and allocate how we can do all that versus trying to go out and look at each individual configuration file
+
 Có rất nhiều file cấu hình riêng lẻ của từng dịch vụ, đó là lí do mà những gì HDP cung cấp trở nên hữu dụng
 
 ![](./assets/comparison.png)
@@ -57,17 +61,29 @@ face, which is abstracted away when you use a package system like HDP or Hortonw
 
 ### Manage users
 
+- Centralized management with Ambari
+- Built-in security features
+    - Include Kerberos authentication, RBAC, encryption, audit logging, authorization, Apache Ranger
+    - Manage and access data for users and set up those groups and users: setup different users, groups and permissions
+
 ### Data protection
 
+How to make sure that when 1 site goes down, the data is protected, keeping that data up & going, how about high
+availability, do the snapshots, roll back to different versions
+
 - High availability:
-  - In Hadoop 2.x, Primary NameNode and Secondary NameNode shared the same Journal.
-  - In Hadoop 3.x thì có multiple NameNodes vs. just having 2. Only 1 real NameNode
-    - NameNodes share the journal to protect data loss during writes -> if the NameNode goes down during the writes, got that Shared Journal -> recover it -> Secondary NameNode can pick up right where we left off.
-    - Support more than 2 NameNodes 
-    - Cold data tiers
-    - Active - standby: 1 NameNode is active and others are in standby mode.
+    - In Hadoop 2.x, Primary NameNode and Secondary NameNode shared the same Journal.
+    - In Hadoop 3.x thì có multiple NameNodes vs. just having 2. Only 1 real NameNode
+        - NameNodes share the journal to protect data loss during writes -> if the NameNode goes down during the writes,
+          got that Shared Journal -> recover it -> Secondary NameNode can pick up right where we left off.
+        - Support more than 2 NameNodes
+        - Cold data tiers
+        - Active - standby: 1 NameNode is active and others are in standby mode.
 
 ### Sharing resources
+
+What about being able to share resources, how do you handle sharing & queuing, sales vs engineering team
+- In Hadoop clusters, sharing resources and queuing is typically managed through a resource manager and a scheduler. HDP uses Apache YARN as the resource manager and scheduler, which allows different teams and users to share resources and manage workloads.
 
 ## How to provision HDP
 
@@ -79,10 +95,12 @@ face, which is abstracted away when you use a package system like HDP or Hortonw
 
 ### Ambari
 
+- Maintenance mode
 - Ambari Server is installed in the NameNode and Ambari Agents are installed in every node. The Ambari Agents send
   Heartbeats to the server at frequent interval of time.
 
 #### Manage configuration files in 1 place
+
 - Easier rollback
 
 #### Manage alerts
@@ -91,9 +109,9 @@ face, which is abstracted away when you use a package system like HDP or Hortonw
   come in, we have warnings that say hey, something might be starting to happen with a service so that we can be in
   front of it, and ultimately have better uptime for our whole Hadoop cluster
 - Severity:
-  - OK
-  - Warning
-  - Critical
-  - **Unknown**
+    - OK
+    - Warning
+    - Critical
+    - **Unknown**
 - Send alerts by group of services (Pig, HDFS, Kafka, HBASE)
 - Send through email or SNMP
